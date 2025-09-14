@@ -4,13 +4,8 @@ import pytest
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-
-@pytest.fixture()
-def browser():
-    browser = webdriver.Chrome()
-    browser.maximize_window()
-    browser.implicitly_wait(3)
-    yield browser
+from pages.homepage import HomePage
+from pages.product import ProductPage
 
 def test_open_s6(browser):
     browser.get("https://demoblaze.com/")
@@ -26,3 +21,10 @@ def test_two_monitors(browser):
     time.sleep(2)
     monitors = browser.find_elements(By.CSS_SELECTOR, value='.card')
     assert len(monitors)==2
+
+def test_open_s6_improved(browser):
+    homepage = HomePage(browser)
+    homepage.open()
+    homepage.click_galaxy_s6()
+    product_page =ProductPage(browser)
+    product_page.check_title_is("Samsung galaxy s6")
